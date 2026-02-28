@@ -1,0 +1,54 @@
+AWS Resources for Task Manager App
+===================================
+
+Region: us-east-2
+
+VPC & Networking:
+- VPC ID: vpc-0279527bd95b427be
+- Subnets:
+  - subnet-0630ea1466eb6d18f (us-east-2a)
+  - subnet-0eb2a482956632c5a (us-east-2b)
+  - subnet-0708fbba353a8d94e (us-east-2c)
+
+Security Groups:
+- ALB Security Group: sg-07e20c2076ca01d5a
+  - Allows: HTTP (80), HTTPS (443) from internet
+- Frontend Security Group: sg-00ebfe502a815a2a4
+  - Allows: Port 3000 from ALB
+- Backend Security Group: sg-0c930382442c393ee
+  - Allows: Port 3000 from ALB and Frontend
+- RDS Security Group: sg-0087e22bdf483fcd1
+  - Allows: Port 3306 from Backend
+
+ECR Repositories:
+- Backend: 180706483735.dkr.ecr.us-east-2.amazonaws.com/backend
+- Frontend: 180706483735.dkr.ecr.us-east-2.amazonaws.com/frontend
+
+ECS:
+- Cluster: task-manager-cluster
+- Backend Task Definition: task-manager-backend:1
+- Frontend Task Definition: task-manager-frontend:1
+
+RDS:
+- Endpoint: taskmanager.c12asgs6sitb.us-east-2.rds.amazonaws.com
+- Port: 3306
+- Database: taskmanager
+- Username: taskuser
+
+Load Balancer:
+- ALB Name: task-manager-alb
+- ALB ARN: arn:aws:elasticloadbalancing:us-east-2:180706483735:loadbalancer/app/task-manager-alb/e7013b29b853fe01
+- DNS Name: task-manager-alb-820343665.us-east-2.elb.amazonaws.com
+- Frontend Target Group: arn:aws:elasticloadbalancing:us-east-2:180706483735:targetgroup/task-manager-frontend-tg/2e7fb07c302c0fa2
+- Backend Target Group: arn:aws:elasticloadbalancing:us-east-2:180706483735:targetgroup/task-manager-backend-tg/5012bb4a2a217320
+
+ECS Services:
+- Backend Service: task-manager-backend-service (running in task-manager-cluster)
+- Frontend Service: task-manager-frontend-service (running in task-manager-cluster)
+
+Application URLs:
+- Frontend: http://task-manager-alb-820343665.us-east-2.elb.amazonaws.com
+- Backend API: http://task-manager-alb-820343665.us-east-2.elb.amazonaws.com/api/*
+
+Next Steps:
+1. Set up GitHub Actions CI/CD for automated deployments
